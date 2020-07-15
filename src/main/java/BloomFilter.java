@@ -1,8 +1,12 @@
 /**
- * @author Prénom Nom (Matricule)
+ * @author Jessy Grondin (20119453)
  * @author Prénom Nom (Matricule)
  */
 public class BloomFilter {
+
+    private int numHashes;
+    private BitSet bitSet;
+
     /**
      * Crée un filtre de Bloom basé sur la taille de l'ensemble de bits et du
      * nombre de fonctions de hachage.
@@ -12,6 +16,8 @@ public class BloomFilter {
      */
     public BloomFilter(int numBits, int numHashes) {
         // TODO À compléter
+        bitSet = new BitSet(numBits);
+        this.numHashes = numHashes;
     }
 
     /**
@@ -32,6 +38,10 @@ public class BloomFilter {
      */
     public void add(byte[] key) {
         // TODO À compléter
+        int bit_index;
+
+
+
     }
 
     /**
@@ -76,5 +86,35 @@ public class BloomFilter {
      */
     public double fpp() {
         return 0.0; // TODO À compléter
+    }
+
+
+    /**
+     * Hash function qui utilise l'encodage ASCII
+     *
+     * Source : M. A. Weiss, Data Structures and Algorithm Analysis in Java (Third
+     *          Edition), 2012
+     * @param key
+     * @param fn
+     * @return
+     *
+     */
+    public int hash (byte[] key, int fn) {
+
+        // TODO revoir.. ressemble bcp a la fonction du livre..
+        int hash = fn * 127;
+
+        for (int i = 0; i < key.length; i++) {
+            hash = 37 * hash + key[i];
+        }
+
+        return hash % bitSet.getBset_len(); // ne depasse pas taille du tableau de bits
+    }
+
+    public static void main (String args[]) {
+
+        BloomFilter bf = new BloomFilter(43, 2);
+        byte[] key = {'a'};
+        int h = bf.hash(key, 2);
     }
 }

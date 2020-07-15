@@ -27,6 +27,10 @@ public class BitSet {
             bitSet[i] = 0;
     }
 
+    public int getBset_len() {
+        return bSet_len;
+    }
+
     /**
      * Retourne la valeur du bit à l'index spécifié.
      *
@@ -108,37 +112,37 @@ public class BitSet {
     }
 
 
-    /**
-     * test
-     * TODO: a supprimer..
-     *
-     */
-    public static void main (String[] args) {
-
-        BitSet b = new BitSet(25);
-        b.set(8);
-        b.set(7);
-        /*
-         *      0000 0000
-         *      1000 0000 OR
-         *      1000 0000
-         *
-         *      1000 0000
-         *      0100 0000 OR
-         *      1100 0000
-         */
-
-        b.set(25);
-        b.set(0);
-        b.set(-1);
-        b.set(24);
-
-        boolean t = b.get(0);
-        System.out.println(t);
-
-        b.clear(0);
-        t = b.get(0);
-        System.out.println(t);
-
-    }
+//    /**
+//     * test
+//     * TODO: a supprimer..
+//     *
+//     */
+//    public static void main (String[] args) {
+//
+//        BitSet b = new BitSet(25);
+//        b.set(8);
+//        b.set(7);
+//        /*
+//         *      0000 0000
+//         *      1000 0000 OR
+//         *      1000 0000
+//         *
+//         *      1000 0000
+//         *      0100 0000 OR
+//         *      1100 0000
+//         */
+//
+//        b.set(25);
+//        b.set(0);
+//        b.set(-1);
+//        b.set(24);
+//
+//        boolean t = b.get(0);
+//        System.out.println(t);
+//
+//        b.clear(0);
+//        t = b.get(0);
+//        System.out.println(t);
+//
+//    }
 }
