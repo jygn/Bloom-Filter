@@ -1,6 +1,7 @@
 /**
  * @author Jessy Grondin (20119453)
  * @author Prénom Nom (Matricule)
+ *
  */
 public class BloomFilter {
 
@@ -37,11 +38,16 @@ public class BloomFilter {
      * @param key l'élément à insérer
      */
     public void add(byte[] key) {
-        // TODO À compléter
+
+        if (key.length == 0)    // null
+            return;
+
         int bit_index;
 
-
-
+        for (int i = 0; i < numHashes; i++) { // active les filtres
+            bit_index = hash(key, i); // hash 0, 1, ... n
+            bitSet.set(bit_index);
+        }
     }
 
     /**
@@ -51,14 +57,29 @@ public class BloomFilter {
      * @return si l'élément est possiblement dans le filtre
      */
     public boolean contains(byte[] key) {
-        return false; // TODO À compléter
+
+        if (numHashes < 1)
+            return false;
+
+        int bit_index;
+
+        for (int i = 0; i < numHashes; i++) {
+            bit_index = hash(key, i); // hash 0, 1, ... n
+            if (!bitSet.get(bit_index))
+                return false;
+        }
+
+        return true;
     }
 
     /**
      * Remet à zéro le filtre de Bloom.
      */
     public void reset() {
-        // TODO À compléter
+        for (int i = 0; i < bitSet.getBset_len(); i++) {
+            if (bitSet.get(i))  // si 1 on toggle le bit
+                bitSet.clear(i);
+        }
     }
 
     /**
@@ -66,8 +87,8 @@ public class BloomFilter {
      *
      * @return nombre de bits
      */
-    public int size() {
-        return 0; // TODO À compléter
+    public int size() { // TODO bien la taille du tableau de bits??
+        return bitSet.getBset_len();
     }
 
     /**
@@ -75,8 +96,15 @@ public class BloomFilter {
      *
      * @return nombre d'éléments insérés
      */
-    public int count() {
-        return 0; // TODO À compléter
+    public int count() { // TODO bien la nb de '1'?
+
+        int cpt = 0;
+        for (int i = 0; i < bitSet.getBset_len(); i++) {
+            if (bitSet.get(i))
+                cpt++;
+        }
+
+        return cpt;
     }
 
     /**
@@ -113,8 +141,17 @@ public class BloomFilter {
 
     public static void main (String args[]) {
 
-        BloomFilter bf = new BloomFilter(43, 2);
-        byte[] key = {'a'};
-        int h = bf.hash(key, 2);
+        BloomFilter bf = new BloomFilter(43, 3);
+
+        byte[] key1 = {};
+        byte[] key2 = {'a','d','e','d'};
+
+        bf.add(key1);
+        bf.add(key2);
+
+        System.out.println(bf.contains(key1));
+        System.out.println(bf.contains(key2));
+
+        bf.reset();
     }
 }
