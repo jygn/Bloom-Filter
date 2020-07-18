@@ -6,7 +6,7 @@ public class BitSet {
 
     private short[] bitSet;
     private static final int short_size = 16; // short = 2 bytes = 16 bits
-    private int bSet_len;
+    private int bSet_len = 0;
 
     /**
      * Crée un ensemble de bits, d'une certaine taille. Ils sont initialisés à
@@ -23,8 +23,6 @@ public class BitSet {
 
         int nbShort = getNbShort(nbits);
         bitSet = new short[nbShort];
-        for (int i = 0; i < nbShort; i++)
-            bitSet[i] = 0;
     }
 
     public int getBset_len() {
@@ -45,9 +43,9 @@ public class BitSet {
             return false;
 
         int dec_i = binToDec16(bitIndex);
-        int byte_i = bitIndex / short_size;
+        int short_i = bitIndex / short_size;
 
-        int b = bitSet[byte_i] & dec_i;  // ex: 00000100 AND 00000001 = 00000000
+        int b = bitSet[short_i] & dec_i;  // ex: 00000100 AND 00000001 = 00000000
         return b == dec_i;
     }
 
@@ -64,9 +62,9 @@ public class BitSet {
             return;
 
         int dec_i = binToDec16(bitIndex);
-        int byte_i = bitIndex / short_size;
+        int short_i = bitIndex / short_size;
 
-        bitSet[byte_i] |= dec_i; // ex: 0000 0100 OR 0000 0001 = 00000101
+        bitSet[short_i] |= dec_i; // ex: 0000 0100 OR 0000 0001 = 00000101
     }
 
     /**
@@ -79,9 +77,9 @@ public class BitSet {
             return;
 
         int dec_i = binToDec16(bitIndex);
-        int byte_i = bitIndex / short_size;
+        int short_i = bitIndex / short_size;
 
-        bitSet[byte_i] ^= dec_i; // ex: 0000 0100 XOR 0000 0100 = 00000000
+        bitSet[short_i] ^= dec_i; // ex: 0000 0100 XOR 0000 0100 = 00000000
     }
 
 

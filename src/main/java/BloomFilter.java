@@ -113,7 +113,8 @@ public class BloomFilter {
      * @return probabilité de faux positifs
      */
     public double fpp() {
-        return 0.0; // TODO À compléter
+        double p = Math.exp((double)(-numHashes * count()) / size());   // p = e^(-kn/m)
+        return Math.pow((1 - p), numHashes);    // (1 - p)^k
     }
 
 
@@ -122,18 +123,20 @@ public class BloomFilter {
      *
      * Source : M. A. Weiss, Data Structures and Algorithm Analysis in Java (Third
      *          Edition), 2012
-     * @param key
-     * @param fn
-     * @return
      *
      */
     public int hash (byte[] key, int fn) {
 
-        // TODO revoir.. ressemble bcp a la fonction du livre..
+        // TODO revoir...
+
         int hash = fn * 127;
 
-        for (int i = 0; i < key.length; i++) {
-            hash = 37 * hash + key[i];
+        int f = fn * 17;
+        if (!(f % 2 == 0)) // impair?
+            f++;
+
+        for (byte b : key) {
+            hash = (37+f) * hash + b;
         }
 
         return hash % bitSet.getBset_len(); // ne depasse pas taille du tableau de bits
@@ -151,6 +154,7 @@ public class BloomFilter {
 
         System.out.println(bf.contains(key1));
         System.out.println(bf.contains(key2));
+        System.out.println("Prob faux positif = "+ bf.fpp());
 
         bf.reset();
     }
