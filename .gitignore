@@ -4,7 +4,8 @@
 /src/test
 .gradle
 /build/
-
+pom.xml
+target
 # Ignore Gradle GUI config
 gradle-app.setting
 

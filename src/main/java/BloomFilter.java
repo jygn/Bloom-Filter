@@ -7,6 +7,7 @@ public class BloomFilter {
 
     private int numHashes;
     private BitSet bitSet;
+    private int nb_elems;
 
     /**
      * Crée un filtre de Bloom basé sur la taille de l'ensemble de bits et du
@@ -19,6 +20,7 @@ public class BloomFilter {
         // TODO À compléter
         bitSet = new BitSet(numBits);
         this.numHashes = numHashes;
+        nb_elems = 0;   // nb d'éléments ajoutés
     }
 
     /**
@@ -48,6 +50,8 @@ public class BloomFilter {
             bit_index = hash(key, i); // hash 0, 1, ... n
             bitSet.set(bit_index);
         }
+
+        nb_elems++;
     }
 
     /**
@@ -96,16 +100,7 @@ public class BloomFilter {
      *
      * @return nombre d'éléments insérés
      */
-    public int count() { // TODO bien la nb de '1'?
-
-        int cpt = 0;
-        for (int i = 0; i < bitSet.getBset_len(); i++) {
-            if (bitSet.get(i))
-                cpt++;
-        }
-
-        return cpt;
-    }
+    public int count() { return nb_elems; }
 
     /**
      * Retourne la probabilité actuelle de faux positifs.
@@ -131,12 +126,12 @@ public class BloomFilter {
 
         int hash = fn * 127;
 
-        int f = fn * 17;
-        if (!(f % 2 == 0)) // impair?
-            f++;
+//        int f = fn * 17;
+//        if (!(f % 2 == 0)) // impair?
+//            f++;
 
         for (byte b : key) {
-            hash = (37+f) * hash + b;
+            hash = 37 * hash + b;
         }
 
         return hash % bitSet.getBset_len(); // ne depasse pas taille du tableau de bits
@@ -154,7 +149,7 @@ public class BloomFilter {
 
         System.out.println(bf.contains(key1));
         System.out.println(bf.contains(key2));
-        System.out.println("Prob faux positif = "+ bf.fpp());
+//        System.out.println("Prob faux positif = "+ bf.fpp());
 
         bf.reset();
     }
