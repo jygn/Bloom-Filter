@@ -17,10 +17,9 @@ public class BloomFilter {
      * @param numHashes nombre de fonctions de hachage
      */
     public BloomFilter(int numBits, int numHashes) {
-        // TODO À compléter
-        bitSet = new BitSet(numBits);
+        this.bitSet = new BitSet(numBits);
         this.numHashes = numHashes;
-        nb_elems = 0;   // nb d'éléments ajoutés
+        this.nb_elems = 0;   // nb d'éléments ajoutés
     }
 
     /**
@@ -29,9 +28,16 @@ public class BloomFilter {
      *
      * @param numElems nombre d'éléments à insérer
      * @param falsePosProb probabilité de faux positifs
+     *
+     *
+     * source : https://en.wikipedia.org/wiki/Bloom_filter
      */
     public BloomFilter(int numElems, double falsePosProb) {
-        // TODO À compléter
+        int numBits = (int)((-numElems*Math.log(falsePosProb))/Math.pow(Math.log(2), 2));   // m = -(nln(p))/(ln2)²
+        int numHashes = (int)((numBits/numElems)*Math.log(2));  // k = (m/n)ln(2)
+        this.bitSet = new BitSet(numBits);
+        this.numHashes = numHashes;
+        this.nb_elems = 0;
     }
 
     /**
@@ -139,7 +145,7 @@ public class BloomFilter {
 
     public static void main (String args[]) {
 
-        BloomFilter bf = new BloomFilter(43, 3);
+        BloomFilter bf = new BloomFilter(10, 0.044);
 
         byte[] key1 = {};
         byte[] key2 = {'a','d','e','d'};
