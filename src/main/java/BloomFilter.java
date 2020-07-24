@@ -29,14 +29,12 @@ public class BloomFilter {
      * @param numElems nombre d'éléments à insérer
      * @param falsePosProb probabilité de faux positifs
      *
-     *
-     * source : https://en.wikipedia.org/wiki/Bloom_filter
      */
     public BloomFilter(int numElems, double falsePosProb) {
-        int numBits = (int)((-numElems*Math.log(falsePosProb))/Math.pow(Math.log(2), 2));   // m = -(nln(p))/(ln2)²
-        int numHashes = (int)((numBits/numElems)*Math.log(2));  // k = (m/n)ln(2)
-        this.bitSet = new BitSet(numBits);
-        this.numHashes = numHashes;
+        int m = (int)Math.ceil(((-numElems*Math.log(falsePosProb))/Math.pow(Math.log(2), 2)));   // m = -(nln(p))/(ln2)²
+        int k = (int)Math.ceil((-Math.log(falsePosProb)/Math.log(2)));  // k = -log_2(p)
+        this.bitSet = new BitSet(m);
+        this.numHashes = k;
         this.nb_elems = 0;
     }
 
@@ -52,7 +50,7 @@ public class BloomFilter {
 
         int bit_index;
 
-        for (int i = 0; i < numHashes; i++) { // active les filtres
+        for (int i = 1; i <= numHashes; i++) { // active les filtres
             bit_index = hash(key, i); // hash 0, 1, ... n
             bitSet.set(bit_index);
         }
@@ -86,10 +84,8 @@ public class BloomFilter {
      * Remet à zéro le filtre de Bloom.
      */
     public void reset() {
-        for (int i = 0; i < bitSet.getBset_len(); i++) {
-            if (bitSet.get(i))  // si 1 on toggle le bit
-                bitSet.clear(i);
-        }
+        bitSet.clearAll();
+        nb_elems = 0;
     }
 
     /**
@@ -114,7 +110,7 @@ public class BloomFilter {
      * @return probabilité de faux positifs
      */
     public double fpp() {
-        double p = Math.exp((double)(-numHashes * count()) / size());   // p = e^(-kn/m)
+        double p = Math.exp(-numHashes * (double)count() / size());   // p = e^(-kn/m)
         return Math.pow((1 - p), numHashes);    // (1 - p)^k
     }
 
@@ -126,36 +122,48 @@ public class BloomFilter {
      *          Edition), 2012
      *
      */
-    public int hash (byte[] key, int fn) {
+    public int hash (byte[] key, int fn) { // TODO: à travailler..
 
-        // TODO revoir...
+        int hash = 17;
 
-        int hash = fn * 127;
+//        int f = fn*7;
+//        int i = 2;
 
-//        int f = fn * 17;
-//        if (!(f % 2 == 0)) // impair?
-//            f++;
+//        while (true) {
+//            if (f % i != 0) {  // nombre premier?
+//                f = i;
+//                break;
+//            }
+//            i++;
+//        }
 
         for (byte b : key) {
             hash = 37 * hash + b;
         }
 
-        return hash % bitSet.getBset_len(); // ne depasse pas taille du tableau de bits
+        return hash % size(); // ne depasse pas taille du tableau de bits
     }
 
     public static void main (String args[]) {
 
-        BloomFilter bf = new BloomFilter(10, 0.044);
+        BloomFilter bf = new BloomFilter(4, 0.0044);
+//        BloomFilter bf = new BloomFilter(2000, 3);
 
         byte[] key1 = {};
-        byte[] key2 = {'a','d','e','d'};
+        byte[] key2 = {'r','d','e','d'};
 
         bf.add(key1);
         bf.add(key2);
 
         System.out.println(bf.contains(key1));
         System.out.println(bf.contains(key2));
-//        System.out.println("Prob faux positif = "+ bf.fpp());
+
+//        bf.reset();
+        System.out.println("k:" + bf.numHashes);
+        System.out.println("n:" + bf.count());
+        System.out.println("m:" + bf.size());
+        System.out.println("Prob faux positif = "+ bf.fpp());
+
 
         bf.reset();
     }

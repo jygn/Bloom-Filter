@@ -72,7 +72,7 @@ public class BitSet {
      *
      * @param bitIndex l'index du bit
      */
-    public void clear(int bitIndex) {       // TODO : tester cette fonction...
+    public void clear(int bitIndex) {
         if (bitIndex >=  bSet_len || bitIndex < 0)
             return;
 
@@ -82,13 +82,22 @@ public class BitSet {
         bitSet[short_i] ^= dec_i; // ex: 0000 0100 XOR 0000 0100 = 00000000
     }
 
+    /**
+     * Remet tous les bits du bitset à 0.
+     */
+    public void clearAll() {
+        for (int i = 0; i < bitSet.length; i++) {
+            bitSet[i] = 0;
+        }
+    }
+
 
     /*
       ********************************** Utility functions ************************************
     */
 
     /**
-     * Fonction qui calcul le nombre de shorts requis pour un nombre x de bits
+     * Calcul le nombre de shorts requis pour un nombre x de bits
      * @param nbits x
      * @return nombre de shorts
      */
@@ -101,7 +110,7 @@ public class BitSet {
     }
 
     /**
-     * Fonction qui convertit un index binaire en valeur decimale sur 16 bits
+     * Convertit un index binaire en valeur decimale sur 16 bits
      * @param bin index binaire
      * @return valeur en decimal
      */
