@@ -71,7 +71,7 @@ public class BloomFilter {
 
         int bit_index;
 
-        for (int i = 0; i < numHashes; i++) {
+        for (int i = 1; i <= numHashes; i++) {
             bit_index = hash(key, i); // hash 0, 1, ... n
             if (!bitSet.get(bit_index))
                 return false;
@@ -124,10 +124,7 @@ public class BloomFilter {
      */
     public int hash (byte[] key, int fn) { // TODO: à travailler..
 
-        int hash = 17;
-
-//        int f = fn*7;
-//        int i = 2;
+        int hash = 127*fn;
 
 //        while (true) {
 //            if (f % i != 0) {  // nombre premier?
