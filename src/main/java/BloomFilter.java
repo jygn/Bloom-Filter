@@ -1,6 +1,6 @@
 /**
  * @author Jessy Grondin (20119453)
- * @author Prénom Nom (Matricule)
+ * @author Aleksandra Maric (1049140)
  *
  */
 public class BloomFilter {
@@ -9,7 +9,7 @@ public class BloomFilter {
     private BitSet bitSet;
     private int nb_elems;
 
-    int collisions; // TODO: enlever
+//    int collisions;
 
     /**
      * Crée un filtre de Bloom basé sur la taille de l'ensemble de bits et du
@@ -20,7 +20,7 @@ public class BloomFilter {
      */
     public BloomFilter(int numBits, int numHashes) {
 
-        if (numBits % 2 == 0) // numBits pairK
+        if (numBits % 2 == 0) // numBits pair
             numBits++;
 
         this.bitSet = new BitSet(numBits);
@@ -59,8 +59,8 @@ public class BloomFilter {
         for (int i = 1; i <= numHashes; i++) { // active les filtres
             bit_index = hash(key, i); // hash 0, 1, ... n
 
-            if (bitSet.get(bit_index))  // TODO: à retirer
-                collisions++;
+//            if (bitSet.get(bit_index))
+//                collisions++;
 
             bitSet.set(bit_index);
         }
@@ -82,7 +82,7 @@ public class BloomFilter {
         int bit_index;
 
         for (int i = 1; i <= numHashes; i++) {
-            bit_index = hash(key, i); // hash 0, 1, ... n
+            bit_index = hash(key, i); // i = hashfunction no
             if (!bitSet.get(bit_index))
                 return false;
         }
@@ -103,7 +103,7 @@ public class BloomFilter {
      *
      * @return nombre de bits
      */
-    public int size() { // TODO bien la taille du tableau de bits??
+    public int size() {
         return bitSet.getBset_len();
     }
 
@@ -132,50 +132,48 @@ public class BloomFilter {
      *          Edition), 2012
      *
      */
-    public int hash (byte[] key, int fn) { // TODO: à travailler..
+    public int hash (byte[] key, int fn) {
 
         int hash = 127*fn;
 
-
-        int f = 7 << fn;
-
         for (byte b : key) {
-            hash = 37 * hash + b + f;
+            fn *= 127;
+            hash = 37 * hash + b + fn;
         }
 
-        return hash % size(); // ne depasse pas taille du tableau de bits
+        return Math.abs(hash % size()); // ne depasse pas taille du tableau de bits
     }
 
-    public static void main (String args[]) {
-
-//        BloomFilter bf = new BloomFilter(4, 0.0044);
-        BloomFilter bf = new BloomFilter(1000, 4);
-
-        byte[] key1 = {};
-        byte[] key2 = {'r','d','e','d'};
-        byte[] key3 = {'v','g','r','d'};
-        byte[] key4 = {'Q','g','h','L'};
-
-        bf.add(key1);
-        bf.add(key2);
-        bf.add(key3);
-        bf.add(key4);
-
-        System.out.println(bf.contains(key1));
-        System.out.println(bf.contains(key2));
-        System.out.println(bf.contains(key3));
-        System.out.println(bf.contains(key4));
-
-
+//    public static void main (String args[]) {
+//
+////        BloomFilter bf = new BloomFilter(4, 0.0044);
+//        BloomFilter bf = new BloomFilter(80, 10);
+//
+//        byte[] key1 = {};
+//        byte[] key2 = {'r','d','e','d'};
+//        byte[] key3 = {'v','g','r','d'};
+//        byte[] key4 = {'Q','g','h','L'};
+//
+//        bf.add(key1);
+//        bf.add(key2);
+//        bf.add(key3);
+//        bf.add(key4);
+//
+//        System.out.println(bf.contains(key1));
+//        System.out.println(bf.contains(key2));
+//        System.out.println(bf.contains(key3));
+//        System.out.println(bf.contains(key4));
+//
+//
 //        bf.reset();
-        System.out.println("k:" + bf.numHashes);
-        System.out.println("n:" + bf.count());
-        System.out.println("m:" + bf.size());
-        System.out.println("Prob faux positif = "+ bf.fpp());
-        System.out.println("collisions:" + bf.collisions);  // nb de collisions...
-
-
-
-        bf.reset();
-    }
+//        System.out.println("k:" + bf.numHashes);
+//        System.out.println("n:" + bf.count());
+//        System.out.println("m:" + bf.size());
+//        System.out.println("Prob faux positif = "+ bf.fpp());
+//        System.out.println("collisions:" + bf.collisions);  // nb de collisions...
+//
+//
+//
+//        bf.reset();
+//    }
 }

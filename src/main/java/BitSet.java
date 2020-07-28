@@ -121,8 +121,6 @@ public class BitSet {
 
 //    /**
 //     * test
-//     * TODO: a supprimer..
-//     *
 //     */
 //    public static void main (String[] args) {
 //
