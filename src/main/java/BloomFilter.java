@@ -1,4 +1,5 @@
 /**
+ *
  * @author Jessy Grondin (20119453)
  * @author Aleksandra Maric (1049140)
  *
@@ -120,10 +121,9 @@ public class BloomFilter {
      * @return probabilité de faux positifs
      */
     public double fpp() {
-        double p = Math.exp(-numHashes * (double) nb_elems / size());   // p = e^(-kn/m)
+        double p = Math.exp(-numHashes * (double) nb_elems / (double) size());   // p = e^(-kn/m)
         return Math.pow((1 - p), numHashes);    // (1 - p)^k
     }
-
 
     /**
      * Hash function qui utilise l'encodage ASCII
@@ -134,11 +134,11 @@ public class BloomFilter {
      */
     public int hash (byte[] key, int fn) {
 
-        int hash = 127*fn;
+        int hash = fn*127;
 
         for (byte b : key) {
             fn *= 127;
-            hash = 37 * hash + b + fn;
+            hash = 37 * hash + b * fn;
         }
 
         return Math.abs(hash % size()); // ne depasse pas taille du tableau de bits
@@ -146,18 +146,22 @@ public class BloomFilter {
 
 //    public static void main (String args[]) {
 //
-////        BloomFilter bf = new BloomFilter(4, 0.0044);
-//        BloomFilter bf = new BloomFilter(80, 10);
+//        BloomFilter bf = new BloomFilter(4, 0.0044);
+//        BloomFilter bf = new BloomFilter(30, 4);
 //
 //        byte[] key1 = {};
 //        byte[] key2 = {'r','d','e','d'};
 //        byte[] key3 = {'v','g','r','d'};
 //        byte[] key4 = {'Q','g','h','L'};
+//        byte[] key5 = {'v','r','d','k', 'h'};
+//        byte[] key6 = {'Q','D','C',' ', '>'};
 //
 //        bf.add(key1);
 //        bf.add(key2);
 //        bf.add(key3);
 //        bf.add(key4);
+//        bf.add(key5);
+//        bf.add(key6);
 //
 //        System.out.println(bf.contains(key1));
 //        System.out.println(bf.contains(key2));
@@ -165,7 +169,6 @@ public class BloomFilter {
 //        System.out.println(bf.contains(key4));
 //
 //
-//        bf.reset();
 //        System.out.println("k:" + bf.numHashes);
 //        System.out.println("n:" + bf.count());
 //        System.out.println("m:" + bf.size());

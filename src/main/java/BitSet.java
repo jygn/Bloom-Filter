@@ -1,11 +1,11 @@
 /**
  * @author Jessy Grondin (20119453)
- * @author Prénom Nom (Matricule)
+ * @author Aleksandra Maric (1049140)
  */
 public class BitSet {
 
     private short[] bitSet;
-    private static final int short_size = 16; // short = 2 bytes = 16 bits
+    private static final int short_size = 16; // short = 16 bits
     private int bSet_len = 0;
 
     /**
