@@ -1,2 +1,2 @@
-# Bloom filter - TP Université de Montréal
+# Bloom filter - School Project
 
