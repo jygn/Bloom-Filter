@@ -11,4 +11,4 @@ Donc par la suite, pour vérifier si cette même clé est présente dans le bits
 - Par contre, le filtre de bloom peut indiquer qu'une clé fait partie du set sans que ça soit le cas, il s'agit donc des faux positifs.
 Ceux-ci surviennent lorsque d'autres clés ont certaines valeurs de hachage en commun avec une clé.
 
-- Ainsi, le plus gros défi est de choisir k et m correctement afin la probabilité d'avoir des faux positifs. 
+- Ainsi, le plus gros défi est de choisir k et m correctement pour diminuer la probabilité d'avoir des faux positifs. 
